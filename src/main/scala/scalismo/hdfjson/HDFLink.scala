@@ -10,22 +10,23 @@ enum Collection {
 }
 
 object Collection {
-  given rw : ReadWriter[Collection] = macroRW
+  given rw: ReadWriter[Collection] = macroRW
 }
 
 enum LinkType {
-  case  H5L_TYPE_HARD
+  case H5L_TYPE_HARD
 }
 
 object LinkType {
-  given rw : ReadWriter[LinkType] = macroRW
+  given rw: ReadWriter[LinkType] = macroRW
 }
 
-final case class HDFLink(title: String,
-                       collection: Collection,
-                       id: HDFIdentifier,
-                         @key("class") clazz : LinkType
-                      )
+final case class HDFLink(
+    title: String,
+    collection: Collection,
+    id: HDFIdentifier,
+    @key("class") clazz: LinkType
+)
 object HDFLink {
-  given rwHL : ReadWriter[HDFLink] = macroRW
+  given rwHL: ReadWriter[HDFLink] = macroRW
 }

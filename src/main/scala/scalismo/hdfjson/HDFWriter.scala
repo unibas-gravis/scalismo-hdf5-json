@@ -5,7 +5,7 @@ import scala.util.Try
 
 object HDFWriter {
 
-  def writeHDFJson(file : HDFFile, jsonOutFile : java.io.File) : Try[Unit] = Try {
+  def writeHDFJson(file: HDFFile, jsonOutFile: java.io.File): Try[Unit] = Try {
     val s = upickle.default.write[HDFFile](file)
 
     val writer = PrintWriter(jsonOutFile)

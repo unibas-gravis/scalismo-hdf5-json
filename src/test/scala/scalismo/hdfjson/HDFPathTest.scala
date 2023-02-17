@@ -1,6 +1,5 @@
 package scalismo.hdfjson;
 
-
 class HDFPathTest extends munit.FunSuite {
   test("an empty path evaluates to /") {
     val path = HDFPath("")
@@ -32,4 +31,3 @@ class HDFPathTest extends munit.FunSuite {
     assertEquals(path.toString, "/a/b/c/d")
   }
 }
-

@@ -2,9 +2,9 @@ package scalismo.hdfjson
 
 import upickle.default.*
 
-case class HDFDateTime(time : Long)
+case class HDFDateTime(time: Long)
 object HDFDateTime {
-  def now() : HDFDateTime = HDFDateTime(System.currentTimeMillis())
+  def now(): HDFDateTime = HDFDateTime(System.currentTimeMillis())
 
-  given  rw : ReadWriter[HDFDateTime] = macroRW
+  given rw: ReadWriter[HDFDateTime] = macroRW
 }

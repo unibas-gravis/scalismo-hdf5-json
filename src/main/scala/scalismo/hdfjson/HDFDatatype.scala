@@ -3,13 +3,13 @@ package scalismo.hdfjson
 import upickle.default.*
 import upickle.implicits.key
 
-enum DataClass  {
+enum DataClass {
   case H5T_STRING
   case H5T_INTEGER
   case H5T_FLOAT
 }
 object DataClass {
-  given rw : ReadWriter[DataClass] = macroRW
+  given rw: ReadWriter[DataClass] = macroRW
 }
 
 enum CharSet {
@@ -17,7 +17,7 @@ enum CharSet {
   case H5T_CSET_UTF8
 }
 object CharSet {
-  given rw : ReadWriter[CharSet] = macroRW
+  given rw: ReadWriter[CharSet] = macroRW
 }
 
 enum StrPad {
@@ -27,7 +27,7 @@ enum StrPad {
 }
 
 object StrPad {
-  given rw : ReadWriter[StrPad] = macroRW
+  given rw: ReadWriter[StrPad] = macroRW
 }
 
 enum Length {
@@ -36,28 +36,30 @@ enum Length {
 }
 
 object Length {
-  given rw: ReadWriter[Length] = upickle.default.readwriter[ujson.Value].bimap[Length](
-    x => x match {
-      case H5T_VARIABLE => ujson.Str("H5T_VARIABLE")
-      case StringLength(l) => ujson.Value.JsonableInt(l)
-    },
-  value => {
-    value.strOpt match {
-      case Some("H5T_VARIABLE") => H5T_VARIABLE
-      case None  => StringLength(value.num.toInt)
-    }
-  })
+  given rw: ReadWriter[Length] = upickle.default
+    .readwriter[ujson.Value]
+    .bimap[Length](
+      x =>
+        x match {
+          case H5T_VARIABLE    => ujson.Str("H5T_VARIABLE")
+          case StringLength(l) => ujson.Value.JsonableInt(l)
+        },
+      value => {
+        value.strOpt match {
+          case Some("H5T_VARIABLE") => H5T_VARIABLE
+          case None                 => StringLength(value.num.toInt)
+        }
+      }
+    )
 }
 
-
-
-
-
-
 enum HDFDatatype(@key("class") val clazz: DataClass) {
-  case string_datatype(charSet: CharSet, strPad: StrPad, length: Length) extends HDFDatatype(DataClass.H5T_STRING)
-  case floating_point_datatype(base : FloatingPointDatatype.Base) extends HDFDatatype(DataClass.H5T_FLOAT)
-  case integer_datatype(base : IntegerDatatype.Base) extends HDFDatatype(DataClass.H5T_INTEGER)
+  case string_datatype(charSet: CharSet, strPad: StrPad, length: Length)
+      extends HDFDatatype(DataClass.H5T_STRING)
+  case floating_point_datatype(base: FloatingPointDatatype.Base)
+      extends HDFDatatype(DataClass.H5T_FLOAT)
+  case integer_datatype(base: IntegerDatatype.Base)
+      extends HDFDatatype(DataClass.H5T_INTEGER)
 }
 
 object FloatingPointDatatype {
@@ -100,37 +102,42 @@ object IntegerDatatype {
 
 object HDFDatatype {
   // as ujson does not seem to be able to serialize enums correctly
-  given rw : ReadWriter[HDFDatatype] = upickle.default.readwriter[ujson.Value].bimap[HDFDatatype](
-      x => x match {
-        case HDFDatatype.string_datatype(charSet, strPad, length) => ujson.Obj(
-          "class" -> writeJs(x.clazz),
-          "charSet" -> writeJs(charSet),
-          "strPad" -> writeJs(strPad),
-          "length" -> writeJs(length)
-        )
-        case HDFDatatype.floating_point_datatype(base) => ujson.Obj(
-          "class" -> writeJs(x.clazz),
-          "base" -> writeJs(base)
-        )
-      },
-    value => {
-      read[DataClass](value("class")) match {
-        case DataClass.H5T_FLOAT => HDFDatatype.floating_point_datatype(
-          read(value("base"))
-        )
-        case DataClass.H5T_INTEGER => HDFDatatype.integer_datatype(
-          read(value("base"))
-        )
-        case DataClass.H5T_STRING => {
-          HDFDatatype.string_datatype(
-            read[CharSet](value("charSet")),
-            read[StrPad](value("strPad")),
-            read[Length](value("length"))
-          )
+  given rw: ReadWriter[HDFDatatype] = upickle.default
+    .readwriter[ujson.Value]
+    .bimap[HDFDatatype](
+      x =>
+        x match {
+          case HDFDatatype.string_datatype(charSet, strPad, length) =>
+            ujson.Obj(
+              "class" -> writeJs(x.clazz),
+              "charSet" -> writeJs(charSet),
+              "strPad" -> writeJs(strPad),
+              "length" -> writeJs(length)
+            )
+          case HDFDatatype.floating_point_datatype(base) =>
+            ujson.Obj(
+              "class" -> writeJs(x.clazz),
+              "base" -> writeJs(base)
+            )
+        },
+      value => {
+        read[DataClass](value("class")) match {
+          case DataClass.H5T_FLOAT =>
+            HDFDatatype.floating_point_datatype(
+              read(value("base"))
+            )
+          case DataClass.H5T_INTEGER =>
+            HDFDatatype.integer_datatype(
+              read(value("base"))
+            )
+          case DataClass.H5T_STRING => {
+            HDFDatatype.string_datatype(
+              read[CharSet](value("charSet")),
+              read[StrPad](value("strPad")),
+              read[Length](value("length"))
+            )
+          }
         }
       }
-    }
-  )
+    )
 }
-
-

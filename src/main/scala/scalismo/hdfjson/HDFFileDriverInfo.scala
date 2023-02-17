@@ -5,5 +5,5 @@ import upickle.default.*
 case class HDFFileDriverInfo()
 
 object HDFFileDriverInfo {
-  given rw : ReadWriter[HDFFileDriverInfo] = macroRW
+  given rw: ReadWriter[HDFFileDriverInfo] = macroRW
 }
