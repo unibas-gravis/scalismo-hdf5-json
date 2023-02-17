@@ -16,29 +16,34 @@
 
 package scalismo.hdfjson
 
-
 import upickle.default.*
 import java.io.File
 import scala.util.Try
 
 case class HDFFile(
-                    root: HDFIdentifier,
-                    groups: Map[HDFIdentifier, HDFGroup],
-                    datasets: Map[HDFIdentifier, HDFDataset],
-                    apiVersion: String
-                  )
+    root: HDFIdentifier,
+    groups: Map[HDFIdentifier, HDFGroup],
+    datasets: Map[HDFIdentifier, HDFDataset],
+    apiVersion: String
+)
 
 object HDFFile {
-  def apply(root: HDFIdentifier,
-            groups: Map[HDFIdentifier, HDFGroup],
-            datasets: Map[HDFIdentifier, HDFDataset]
-           ): HDFFile = new HDFFile(root, groups, datasets, apiVersion = "1.0.0")
+  def apply(
+      root: HDFIdentifier,
+      groups: Map[HDFIdentifier, HDFGroup],
+      datasets: Map[HDFIdentifier, HDFDataset]
+  ): HDFFile = new HDFFile(root, groups, datasets, apiVersion = "1.0.0")
+
+  def empty: HDFFile = {
+    val rootGid = HDFIdentifier.randomUUID()
+    val root = HDFGroup()
+    HDFFile(rootGid, Map(rootGid -> root), Map.empty)
+  }
 
   def fromFile(file: File): Try[HDFFile] = {
     HDFReader.readHDFJsonFile(file)
   }
 
   given rw: ReadWriter[HDFFile] = macroRW
-
 
 }

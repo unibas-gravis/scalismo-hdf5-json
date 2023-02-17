@@ -16,25 +16,35 @@
 
 package scalismo.hdfjson
 
-case class HDFPath (components : Seq[String]) {
+case class HDFPath(components: Seq[String]) {
 
-  def /(newComponent : String) : HDFPath = {
+  def /(newComponent: String): HDFPath = {
     HDFPath(this, newComponent)
   }
-  override def toString : String = {
+
+  def parent: HDFPath = {
+    HDFPath(components.dropRight(1))
+  }
+
+  def lastComponent: String = {
+    components.last
+  }
+
+  override def toString: String = {
     "/" + components.mkString("/")
   }
 }
 object HDFPath {
-  def apply (path : String) : HDFPath = {
+  def apply(path: String): HDFPath = {
     HDFPath(path.split("/").toSeq.filterNot(_.isEmpty))
   }
-  def apply(path : HDFPath, newComponent : String) : HDFPath = {
-    HDFPath(path,  HDFPath(newComponent))
+  def apply(path: HDFPath, newComponent: String): HDFPath = {
+    HDFPath(path, HDFPath(newComponent))
   }
 
-  def apply(path : HDFPath, newComponent : HDFPath) : HDFPath = {
+  def apply(path: HDFPath, newComponent: HDFPath): HDFPath = {
     HDFPath(path.components ++ newComponent.components)
   }
-}
 
+  def root: HDFPath = HDFPath(Seq.empty)
+}
