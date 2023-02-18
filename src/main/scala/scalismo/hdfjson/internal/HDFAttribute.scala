@@ -1,5 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.internal.{HDFAttribute, HDFDataSpace, HDFDatatype}
 import upickle.default.{ReadWriter, macroRW}
 import upickle.implicits.key
 case class HDFAttribute(

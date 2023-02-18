@@ -1,5 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.*
 import upickle.default.*
 
 import java.io.File

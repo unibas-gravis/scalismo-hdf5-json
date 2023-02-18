@@ -1,8 +1,10 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
+
+import scalismo.hdfjson.internal.HDFReader
 
 import java.io.File
 import java.net.URL
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
 class HDFReaderTest extends munit.FunSuite {
   test("a typical hdf5 json file can be successfully parsed") {

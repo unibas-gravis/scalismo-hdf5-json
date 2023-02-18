@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.*
 import upickle.default.*
+
 import java.io.File
 import scala.util.Try
 
@@ -36,7 +38,7 @@ object HDFFile {
 
   def empty: HDFFile = {
     val rootGid = HDFIdentifier.randomUUID()
-    val root = HDFGroup()
+    val root = HDFGroup(alias = Seq("/"))
     HDFFile(rootGid, Map(rootGid -> root), Map.empty)
   }
 

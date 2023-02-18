@@ -1,5 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.internal.HDFDateTime
 import upickle.default.*
 
 case class HDFDateTime(time: Long)

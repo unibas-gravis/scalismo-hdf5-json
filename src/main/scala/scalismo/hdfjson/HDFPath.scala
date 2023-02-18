@@ -16,6 +16,8 @@
 
 package scalismo.hdfjson
 
+import scalismo.hdfjson.HDFPath
+
 case class HDFPath(components: Seq[String]) {
 
   def /(newComponent: String): HDFPath = {

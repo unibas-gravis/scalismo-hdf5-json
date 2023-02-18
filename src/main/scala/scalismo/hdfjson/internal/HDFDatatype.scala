@@ -1,22 +1,23 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.*
 import upickle.default.*
 import upickle.implicits.key
 
-enum DataClass {
+private[hdfjson] enum DataClass {
   case H5T_STRING
   case H5T_INTEGER
   case H5T_FLOAT
 }
-object DataClass {
+private[hdfjson] object DataClass {
   given rw: ReadWriter[DataClass] = macroRW
 }
 
-enum CharSet {
+private[hdfjson] enum CharSet {
   case H5T_CSET_ASCII
   case H5T_CSET_UTF8
 }
-object CharSet {
+private[hdfjson] object CharSet {
   given rw: ReadWriter[CharSet] = macroRW
 }
 

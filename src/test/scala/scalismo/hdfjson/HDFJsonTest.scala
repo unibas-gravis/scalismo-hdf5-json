@@ -1,7 +1,7 @@
-package scalismo.hdfjson.api
+package scalismo.hdfjson
 
 import munit.FunSuite
-import scalismo.hdfjson.{HDFIOTestCases, HDFPath}
+import scalismo.hdfjson.internal.HDFIOTestCases
 
 class HDFJsonTest extends FunSuite {
   test("HDFJson should be able to retrieve a group") {
@@ -74,6 +74,21 @@ class HDFJsonTest extends FunSuite {
         .getOrElse("not-retrieved"),
       "value2"
     )
+  }
+
+  test("HDFJson should be able to read and retrive a float array ") {
+    val arr = FloatArray1D.from(Array(1.0f, 2.0f, 3.0f))
+    val hdfj = HDFJson.createEmpty
+      .addGroup(HDFPath("/g1/g11"))
+      .addDataset(
+        HDFPath("/g1/g11"),
+        "ds1",
+        arr
+      )
+    val retrieved = hdfj
+      .getDataset[FloatArray1D](HDFPath("/g1/g11"), "ds1")
+      .getOrElse(FloatArray1D.from(Array.empty[Float]))
+    assert(retrieved.toArray.sameElements(arr.toArray))
 
   }
 

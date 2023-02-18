@@ -1,4 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
+
+import scalismo.hdfjson.internal.HDFFile
 
 import java.io.PrintWriter
 import scala.util.Try

@@ -1,10 +1,11 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
-import java.io.File
-import scala.util.Try
+import scalismo.hdfjson.internal.HDFFile
 import upickle.default.*
 
+import java.io.File
 import scala.io.Source
+import scala.util.Try
 
 object HDFReader {
 

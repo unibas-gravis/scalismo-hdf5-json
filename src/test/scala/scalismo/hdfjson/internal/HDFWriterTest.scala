@@ -1,4 +1,4 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
 import munit.FunSuite
 

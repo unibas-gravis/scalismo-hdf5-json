@@ -1,22 +1,9 @@
-package scalismo.hdfjson.api
+package scalismo.hdfjson
 
-import scalismo.hdfjson.Length.StringLength
-import scalismo.hdfjson.{
-  CharSet,
-  Collection,
-  HDFAttribute,
-  HDFDataSpace,
-  HDFDataset,
-  HDFDatatype,
-  HDFFile,
-  HDFGroup,
-  HDFIdentifier,
-  HDFLink,
-  HDFPath,
-  HDFReader,
-  LinkType,
-  StrPad
-}
+import scalismo.hdfjson.HDFJson
+import scalismo.hdfjson.internal.*
+import scalismo.hdfjson.internal.Length.StringLength
+import upickle.default.read
 
 import scala.collection.mutable
 import scala.util.Try
@@ -82,7 +69,7 @@ class HDFJson(private val hdfFile: HDFFile) {
 
       // create the new group
       val gid = HDFIdentifier.randomUUID()
-      val newGroup = HDFGroup()
+      val newGroup = HDFGroup(alias = Seq(path.toString))
 
       // find parent group
       val (parentGid, parentGroup) =
@@ -138,7 +125,8 @@ class HDFJson(private val hdfFile: HDFFile) {
     val dataset = HDFDataset(
       hdfConverter.dataspace(datasetValue),
       hdfConverter.datatype(datasetValue),
-      hdfConverter.toUjsonValue(datasetValue)
+      hdfConverter.toUjsonValue(datasetValue),
+      alias=Seq((path / datasetName).toString)
     )
     val datasetId = HDFIdentifier.randomUUID()
     val newGroup = group.copy(links =
@@ -167,13 +155,25 @@ class HDFJson(private val hdfFile: HDFFile) {
       None
     }
   }
+
+  def toJson : String = {
+    upickle.default.write[HDFFile](hdfFile)
+  }
 }
 
 object HDFJson {
-  def readFile(jsonFile: java.io.File): Try[HDFJson] = {
+  def readFromFile(jsonFile: java.io.File): Try[HDFJson] = {
     HDFReader
       .readHDFJsonFile(jsonFile)
       .map(f => HDFJson(f))
+  }
+
+  def fromJson(jsonString: String): Try[HDFJson] = Try {
+    HDFJson(read[HDFFile](jsonString))
+  }
+
+  def writeToFile(HDFJson: HDFJson, outputFile : java.io.File) : Try[Unit] = {
+    HDFWriter.writeHDFJson(HDFJson.hdfFile, outputFile)
   }
 
   def createEmpty: HDFJson = {

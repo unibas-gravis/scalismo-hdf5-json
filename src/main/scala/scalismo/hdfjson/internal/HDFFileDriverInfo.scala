@@ -1,5 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.internal.HDFFileDriverInfo
 import upickle.default.*
 
 case class HDFFileDriverInfo()

@@ -1,5 +1,6 @@
-package scalismo.hdfjson
+package scalismo.hdfjson.internal
 
+import scalismo.hdfjson.internal.{DatasetCreationProperties, HDFDataSpace, HDFDataset, HDFDatatype}
 import upickle.default.*
 import upickle.implicits.key
 
