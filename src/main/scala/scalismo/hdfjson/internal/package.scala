@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdfjson
 
-import scalismo.hdfjson.internal.{HDFAttribute, HDFDataSpace, HDFDatatype}
-import upickle.default.{ReadWriter, macroRW}
-import upickle.implicits.key
-case class HDFAttribute(
-    name: String,
-    @key("type") dtype: HDFDatatype,
-    shape: HDFDataSpace,
-    value: ujson.Value
-)
-
-object HDFAttribute {
-  given rw: ReadWriter[HDFAttribute] = macroRW
-}
+/** Internal package for hdfjson. This package contains classes that represent
+  * the low level details on how the individual hdf5 objects are represented in
+  * hdf5json. In particular, for every object defined in hdf5json we have a
+  * corresponding case class. These classes are are not intended to be used by
+  * the user.
+  */
+package object internal {}

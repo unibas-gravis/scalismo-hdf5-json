@@ -41,7 +41,9 @@ object HDFPath {
     HDFPath(path.split("/").toSeq.filterNot(_.isEmpty))
   }
   def apply(path: HDFPath, newComponent: String): HDFPath = {
-    HDFPath(path, HDFPath(newComponent))
+    HDFPath(
+      path.components ++ newComponent.split("/").toSeq.filterNot(_.isEmpty)
+    )
   }
 
   def apply(path: HDFPath, newComponent: HDFPath): HDFPath = {

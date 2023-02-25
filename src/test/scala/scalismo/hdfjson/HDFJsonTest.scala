@@ -3,6 +3,10 @@ package scalismo.hdfjson
 import munit.FunSuite
 import scalismo.hdfjson.internal.HDFIOTestCases
 
+import java.io.File
+import java.net.URL
+import scala.util.{Failure, Success}
+
 class HDFJsonTest extends FunSuite {
   test("HDFJson should be able to retrieve a group") {
     val hdfFile = HDFIOTestCases.simpleHDFFile
@@ -90,6 +94,16 @@ class HDFJsonTest extends FunSuite {
       .getOrElse(FloatArray1D.from(Array.empty[Float]))
     assert(retrieved.toArray.sameElements(arr.toArray))
 
+  }
+
+  test("HDFJosn case successfully parse a standard scalismo file") {
+    val resource: URL = getClass.getResource("sampleFile.json")
+    HDFJson.readFromFile(new File(resource.getFile)) match {
+      case Success(hdfjson) =>
+        assert(hdfjson.exists(HDFPath("/representer/cells")))
+      case Failure(e) =>
+        fail(e.getMessage)
+    }
   }
 
 }

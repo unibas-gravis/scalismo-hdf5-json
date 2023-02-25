@@ -48,7 +48,11 @@ object Length {
       value => {
         value.strOpt match {
           case Some("H5T_VARIABLE") => H5T_VARIABLE
-          case None                 => StringLength(value.num.toInt)
+          case Some(opt) =>
+            throw new Exception(
+              "invalid stringopt " + opt + ": should never happen"
+            )
+          case None => StringLength(value.num.toInt)
         }
       }
     )
@@ -116,6 +120,11 @@ object HDFDatatype {
               "length" -> writeJs(length)
             )
           case HDFDatatype.floating_point_datatype(base) =>
+            ujson.Obj(
+              "class" -> writeJs(x.clazz),
+              "base" -> writeJs(base)
+            )
+          case HDFDatatype.integer_datatype(base) =>
             ujson.Obj(
               "class" -> writeJs(x.clazz),
               "base" -> writeJs(base)
