@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package scalismo.hdfjson
+package scalismo.hdf5json
 
-import scalismo.hdfjson.HDFPath
+import scalismo.hdf5json.HDFPath
 
 case class HDFPath(components: Seq[String]) {
 

@@ -16,7 +16,7 @@
 
 package example
 
-import scalismo.hdfjson.{FloatArray1D, FloatArray2D, HDFJson, HDFPath}
+import scalismo.hdf5json.{FloatArray1D, FloatArray2D, HDF5Json, HDFPath}
 
 /** Example of how to create a HDFJson object with groups, datasets and
   * attributes and write it to a file.
@@ -24,7 +24,7 @@ import scalismo.hdfjson.{FloatArray1D, FloatArray2D, HDFJson, HDFPath}
 object SimpleHDFJsonExample {
 
   def main(args: Array[String]): Unit = {
-    val hdfJson = HDFJson.createEmpty
+    val hdfJson = HDF5Json.createEmpty
       .addGroup(HDFPath("/group1/group2"))
       .addAttribute[String](HDFPath("/group1/group2"), "attribute1", "value1")
       .addDataset[FloatArray1D](
@@ -38,7 +38,7 @@ object SimpleHDFJsonExample {
         FloatArray2D.from(Array(Array(1.0f, 2.0f), Array(3.0f, 4.0f)))
       )
 
-    HDFJson.writeToFile(hdfJson, java.io.File("example.h5.json")).get
+    HDF5Json.writeToFile(hdfJson, java.io.File("example.h5.json")).get
   }
 
 }

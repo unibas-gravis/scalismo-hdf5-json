@@ -1,6 +1,6 @@
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.HDFPath
+import scalismo.hdf5json.HDFPath
 
 class HDFPathTest extends munit.FunSuite {
   test("an empty path evaluates to /") {

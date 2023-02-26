@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.*
+import scalismo.hdf5json.*
 import upickle.default.*
 
 import java.io.File

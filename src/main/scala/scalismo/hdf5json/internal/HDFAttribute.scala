@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.HDFUserblock
-import upickle.default.*
+import scalismo.hdf5json.internal.{HDFAttribute, HDFDataSpace, HDFDatatype}
+import upickle.default.{ReadWriter, macroRW}
+import upickle.implicits.key
+case class HDFAttribute(
+    name: String,
+    @key("type") dtype: HDFDatatype,
+    shape: HDFDataSpace,
+    value: ujson.Value
+)
 
-case class HDFUserblock()
-object HDFUserblock {
-  given rw: ReadWriter[HDFUserblock] = macroRW
+object HDFAttribute {
+  given rw: ReadWriter[HDFAttribute] = macroRW
 }

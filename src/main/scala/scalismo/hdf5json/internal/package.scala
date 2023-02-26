@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json
 
-import scalismo.hdfjson.internal.HDFDateTime
-import upickle.default.*
-
-case class HDFDateTime(time: Long)
-object HDFDateTime {
-  def now(): HDFDateTime = HDFDateTime(System.currentTimeMillis())
-
-  given rw: ReadWriter[HDFDateTime] = macroRW
-}
+/** Internal package for hdfjson. This package contains classes that represent
+  * the low level details on how the individual hdf5 objects are represented in
+  * hdf5json. In particular, for every object defined in hdf5json we have a
+  * corresponding case class. These classes are are not intended to be used by
+  * the user.
+  */
+package object internal {}

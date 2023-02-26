@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.*
+import scalismo.hdf5json.*
 import upickle.default.*
 
 import java.io.File
@@ -43,7 +43,7 @@ object HDFFile {
   }
 
   def fromFile(file: File): Try[HDFFile] = {
-    HDFReader.readHDFJsonFile(file)
+    HDFReader.readHDF5JsonFile(file)
   }
 
   given rw: ReadWriter[HDFFile] = macroRW

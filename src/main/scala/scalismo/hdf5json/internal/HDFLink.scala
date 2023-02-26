@@ -13,18 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.{HDFAttribute, HDFDataSpace, HDFDatatype}
+import scalismo.hdf5json.internal.{Collection, HDFIdentifier, HDFLink, LinkType}
 import upickle.default.{ReadWriter, macroRW}
 import upickle.implicits.key
-case class HDFAttribute(
-    name: String,
-    @key("type") dtype: HDFDatatype,
-    shape: HDFDataSpace,
-    value: ujson.Value
-)
 
-object HDFAttribute {
-  given rw: ReadWriter[HDFAttribute] = macroRW
+enum Collection {
+  case datasets
+  case groups
+  case datatypes
+}
+
+object Collection {
+  given rw: ReadWriter[Collection] = macroRW
+}
+
+enum LinkType {
+  case H5L_TYPE_HARD
+}
+
+object LinkType {
+  given rw: ReadWriter[LinkType] = macroRW
+}
+
+final case class HDFLink(
+    title: String,
+    collection: Collection,
+    id: HDFIdentifier,
+    @key("class") clazz: LinkType
+)
+object HDFLink {
+  given rwHL: ReadWriter[HDFLink] = macroRW
 }

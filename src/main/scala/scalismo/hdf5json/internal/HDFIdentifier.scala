@@ -13,36 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.{Collection, HDFIdentifier, HDFLink, LinkType}
-import upickle.default.{ReadWriter, macroRW}
-import upickle.implicits.key
+import scalismo.hdf5json.internal.HDFIdentifier
+import upickle.default.*
 
-enum Collection {
-  case datasets
-  case groups
-  case datatypes
-}
+case class HDFIdentifier(value: String)
 
-object Collection {
-  given rw: ReadWriter[Collection] = macroRW
-}
+object HDFIdentifier {
 
-enum LinkType {
-  case H5L_TYPE_HARD
-}
+  def randomUUID(): HDFIdentifier = HDFIdentifier(
+    java.util.UUID.randomUUID().toString
+  )
 
-object LinkType {
-  given rw: ReadWriter[LinkType] = macroRW
-}
-
-final case class HDFLink(
-    title: String,
-    collection: Collection,
-    id: HDFIdentifier,
-    @key("class") clazz: LinkType
-)
-object HDFLink {
-  given rwHL: ReadWriter[HDFLink] = macroRW
+  given rw: ReadWriter[HDFIdentifier] = stringKeyRW(
+    readwriter[String].bimap(_.value, HDFIdentifier(_))
+  )
 }

@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.HDFIdentifier
+import scalismo.hdf5json.internal.HDFFileDriverInfo
 import upickle.default.*
 
-case class HDFIdentifier(value: String)
+case class HDFFileDriverInfo()
 
-object HDFIdentifier {
-
-  def randomUUID(): HDFIdentifier = HDFIdentifier(
-    java.util.UUID.randomUUID().toString
-  )
-
-  given rw: ReadWriter[HDFIdentifier] = stringKeyRW(
-    readwriter[String].bimap(_.value, HDFIdentifier(_))
-  )
+object HDFFileDriverInfo {
+  given rw: ReadWriter[HDFFileDriverInfo] = macroRW
 }

@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.HDFFileDriverInfo
-import upickle.default.*
+import scalismo.hdf5json.internal.HDFFile
 
-case class HDFFileDriverInfo()
+import java.io.PrintWriter
+import scala.util.Try
 
-object HDFFileDriverInfo {
-  given rw: ReadWriter[HDFFileDriverInfo] = macroRW
+object HDFWriter {
+
+  def writeHDF5Json(file: HDFFile, jsonOutFile: java.io.File): Try[Unit] = Try {
+    val s = upickle.default.write[HDFFile](file)
+
+    val writer = PrintWriter(jsonOutFile)
+    writer.println(s)
+    writer.close()
+  }
 }

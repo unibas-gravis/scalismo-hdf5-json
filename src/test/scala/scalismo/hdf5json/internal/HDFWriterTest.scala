@@ -1,4 +1,4 @@
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
 import munit.FunSuite
 
@@ -6,7 +6,7 @@ class HDFWriterTest extends FunSuite {
 
   test("write a simple dataset") {
     val file = HDFIOTestCases.simpleHDFFile
-    HDFWriter.writeHDFJson(file, new java.io.File("test.hdf5.json")).get
+    HDFWriter.writeHDF5Json(file, new java.io.File("test.hdf5.json")).get
   }
 }
 

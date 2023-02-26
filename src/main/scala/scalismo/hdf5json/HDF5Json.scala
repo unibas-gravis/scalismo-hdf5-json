@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson
+package scalismo.hdf5json
 
-import scalismo.hdfjson.HDFJson
-import scalismo.hdfjson.internal.*
-import scalismo.hdfjson.internal.Length.StringLength
+import scalismo.hdf5json.HDF5Json
+import scalismo.hdf5json.internal.*
+import scalismo.hdf5json.internal.Length.StringLength
 import upickle.default.read
 
 import scala.collection.mutable
 import scala.util.Try
 
-/** API for defining hdf5 files in a json format. The HDFJson class is
-  * immutable. Every operation on a HDFJson object returns a new HDFJson object.
+/** API for defining hdf5 files in a json format. The HDF5Json class is
+  * immutable. Every operation on a HDF5Json object returns a new HDF5Json object.
   */
-class HDFJson(private val hdfFile: HDFFile) {
+class HDF5Json(private val hdfFile: HDFFile) {
 
   // we build an index structure which contains all the path with links to the group or datasets
   private val pathToGroupMap: mutable.Map[HDFPath, (HDFIdentifier, HDFGroup)] =
@@ -83,9 +83,9 @@ class HDFJson(private val hdfFile: HDFFile) {
     * the subgroups on the path are created. If the group already exists,
     * nothing is done.
     */
-  def addGroup(path: HDFPath): HDFJson = {
+  def addGroup(path: HDFPath): HDF5Json = {
     if (pathToGroupMap.contains(path)) {
-      HDFJson(hdfFile) // nothing to do
+      HDF5Json(hdfFile) // nothing to do
     } else {
       val hdfJsonParentDir = addGroup(path.parent)
 
@@ -109,7 +109,7 @@ class HDFJson(private val hdfFile: HDFFile) {
       val newGroups = hdfJsonParentDir.hdfFile.groups
         .updated(parentGid, parentGroupWithNewLink) + (gid -> newGroup)
 
-      HDFJson(hdfJsonParentDir.hdfFile.copy(groups = newGroups))
+      HDF5Json(hdfJsonParentDir.hdfFile.copy(groups = newGroups))
     }
   }
 
@@ -123,11 +123,11 @@ class HDFJson(private val hdfFile: HDFFile) {
     * @attributeValue
     *   the value of the attribute
     * @return
-    *   a new HDFJson object with the attribute added
+    *   a new HDF5Json object with the attribute added
     */
   def addAttribute[A](path: HDFPath, attributeName: String, attributeValue: A)(
       using hdfConverter: HDFAble[A]
-  ): HDFJson = {
+  ): HDF5Json = {
     if (!pathToGroupMap.contains(path)) {
       addGroup(path).addAttribute(path, attributeName, attributeValue)
     } else {
@@ -139,7 +139,7 @@ class HDFJson(private val hdfFile: HDFFile) {
         hdfConverter.toUjsonValue(attributeValue)
       )
       val newGroup = group.copy(attributes = group.attributes :+ attribute)
-      HDFJson(hdfFile.copy(groups = hdfFile.groups.updated(gid, newGroup)))
+      HDF5Json(hdfFile.copy(groups = hdfFile.groups.updated(gid, newGroup)))
     }
   }
 
@@ -171,11 +171,11 @@ class HDFJson(private val hdfFile: HDFFile) {
     * @tparam A
     *   The type of the dataset
     * @return
-    *   a new HDFJson object with the dataset added
+    *   a new HDF5Json object with the dataset added
     */
   def addDataset[A](path: HDFPath, datasetName: String, datasetValue: A)(using
       hdfConverter: HDFAble[A]
-  ): HDFJson = {
+  ): HDF5Json = {
 
     if (!pathToGroupMap.contains(path)) {
       addGroup(path).addDataset(path, datasetName, datasetValue)
@@ -196,7 +196,7 @@ class HDFJson(private val hdfFile: HDFFile) {
           LinkType.H5L_TYPE_HARD
         ))
       )
-      HDFJson(
+      HDF5Json(
         hdfFile.copy(
           groups = hdfFile.groups.updated(gid, newGroup),
           datasets = hdfFile.datasets + (datasetId -> dataset)
@@ -227,45 +227,45 @@ class HDFJson(private val hdfFile: HDFFile) {
   }
 }
 
-object HDFJson {
+object HDF5Json {
 
-  /** create a HDFJson object from a given hdf.json file
+  /** create a HDF5Json object from a given hdf.json file
     * @param jsonFile
     *   the hdf.json file
     * @return
-    *   the HDFJson object
+    *   the HDF5Json object
     */
-  def readFromFile(jsonFile: java.io.File): Try[HDFJson] = {
+  def readFromFile(jsonFile: java.io.File): Try[HDF5Json] = {
     HDFReader
-      .readHDFJsonFile(jsonFile)
-      .map(f => HDFJson(f))
+      .readHDF5JsonFile(jsonFile)
+      .map(f => HDF5Json(f))
   }
 
-  /** tries to create a HDFJson object from the given json string
+  /** tries to create a HDF5Json object from the given json string
     *
     * @param jsonString
     *   the json string
     * @return
-    *   the HDFJson object
+    *   the HDF5Json object
     */
-  def fromJson(jsonString: String): Try[HDFJson] = Try {
-    HDFJson(read[HDFFile](jsonString))
+  def fromJson(jsonString: String): Try[HDF5Json] = Try {
+    HDF5Json(read[HDFFile](jsonString))
   }
 
-  /** writes the given HDFJson object to the given file
-    * @param HDFJson
-    *   the HDFJson object
+  /** writes the given HDF5Json object to the given file
+    * @param HDF5Json
+    *   the HDF5Json object
     * @param outputFile
     *   the output file
     */
-  def writeToFile(HDFJson: HDFJson, outputFile: java.io.File): Try[Unit] = {
-    HDFWriter.writeHDFJson(HDFJson.hdfFile, outputFile)
+  def writeToFile(HDF5Json: HDF5Json, outputFile: java.io.File): Try[Unit] = {
+    HDFWriter.writeHDF5Json(HDF5Json.hdfFile, outputFile)
   }
 
-  /** creates an empty HDFJson object
+  /** creates an empty HDF5Json object
     */
-  def createEmpty: HDFJson = {
+  def createEmpty: HDF5Json = {
     val hdffile = HDFFile.empty
-    new HDFJson(hdffile)
+    new HDF5Json(hdffile)
   }
 }

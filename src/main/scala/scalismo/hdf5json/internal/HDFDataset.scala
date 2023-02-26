@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.{
+import scalismo.hdf5json.internal.{
   DatasetCreationProperties,
   HDFDataSpace,
   HDFDataset,

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson.internal
+package scalismo.hdf5json.internal
 
-import scalismo.hdfjson.internal.{HDFDataSpace, ShapeClass}
+import scalismo.hdf5json.internal.{HDFDataSpace, ShapeClass}
 import upickle.default.*
 import upickle.implicits.key
 

@@ -4,12 +4,12 @@ ThisBuild / scalaVersion := "3.2.2"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "scalismo-hdf-json",
+    name := "scalismo-hdf5-json",
     organization := "ch.unibas.cs.gravis",
     homepage := Some(url("https://github.com/unibas-gravis/scalismo-hdf5-json")),
     licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
     scmInfo := Some(
-      ScmInfo(url("https://github.com/unibas-gravis/scalismo-hdf5-json"), "git@github.com:unibas-gravis/scalismo-hdf-json.git")
+      ScmInfo(url("https://github.com/unibas-gravis/scalismo-hdf5-json"), "git@github.com:unibas-gravis/scalismo-hdf5-json.git")
     ),
     developers := List(
       Developer("marcelluethi", "marcelluethi", "marcel.luethi@unibas.ch", url("https://github.com/marcelluethi"))

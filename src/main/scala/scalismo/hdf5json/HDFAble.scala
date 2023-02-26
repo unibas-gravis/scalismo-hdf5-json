@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package scalismo.hdfjson
+package scalismo.hdf5json
 
-import scalismo.hdfjson.internal.FloatingPointDatatype.Base
-import scalismo.hdfjson.internal.Length.StringLength
-import scalismo.hdfjson.internal.{
+import scalismo.hdf5json.internal.FloatingPointDatatype.Base
+import scalismo.hdf5json.internal.Length.StringLength
+import scalismo.hdf5json.internal.{
   CharSet,
   FloatingPointDatatype,
   HDFDataSpace,
