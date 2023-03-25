@@ -1,6 +1,8 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "0.1-RC1"
 
 ThisBuild / scalaVersion := "3.2.2"
+
+ThisBuild / versionScheme := Some("early-semver")
 
 lazy val root = (project in file("."))
   .settings(
